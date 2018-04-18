@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_press"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/item_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="2017-03-18 13:12:12" />
+
+    <TextView
+        android:id="@+id/item_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="￥500" />
+
+
+    <TextView
+        android:id="@+id/details"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:background="@mipmap/info_" />
+
+</LinearLayout>
+
