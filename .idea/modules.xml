@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/PayHero.iml" filepath="$PROJECT_DIR$/PayHero.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PayHeroRelease/PayHeroRelease.iml" filepath="$PROJECT_DIR$/PayHeroRelease/PayHeroRelease.iml" />
       <module fileurl="file://$PROJECT_DIR$/PayHeroRelease.iml" filepath="$PROJECT_DIR$/PayHeroRelease.iml" />
       <module fileurl="file://$PROJECT_DIR$/PayHeroRelease/PayHeroRelease-PayHeroRelease.iml" filepath="$PROJECT_DIR$/PayHeroRelease/PayHeroRelease-PayHeroRelease.iml" />
     </modules>
