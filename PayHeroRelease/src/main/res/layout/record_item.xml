@@ -25,7 +25,7 @@
         android:id="@+id/details"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:background="@mipmap/info_" />
+        android:background="@drawable/info_" />
 
 </LinearLayout>
 

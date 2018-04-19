@@ -17,7 +17,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:src="@mipmap/method_zhifubao" />
+            android:src="@drawable/method_zhifubao" />
 
         <TextView
             android:id="@+id/cp_zhifubao"
@@ -41,7 +41,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:src="@mipmap/method_weixin" />
+            android:src="@drawable/method_weixin" />
 
         <TextView
             android:id="@+id/cp_weixin"
@@ -66,7 +66,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:src="@mipmap/method_cash" />
+            android:src="@drawable/method_cash" />
 
         <TextView
             android:id="@+id/cp_cash"
@@ -91,7 +91,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:src="@mipmap/method_card" />
+            android:src="@drawable/method_card" />
 
         <TextView
             android:id="@+id/cp_card"

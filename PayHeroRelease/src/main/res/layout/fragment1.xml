@@ -46,7 +46,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/money"/>
+            android:src="@drawable/money"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/money_zk"/>
+            android:src="@drawable/money_zk"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
