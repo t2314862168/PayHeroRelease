@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 
 import com.android.builder.core.BuilderConstants
 
+apply plugin: 'bugly'
+
+bugly {
+    appId = "1a522f83c6"
+    appKey = "a4c9dd28-5d5e-42dd-bb79-597076ff399c"
+}
+
 android {
     defaultPublishConfig 'intePublic'
 
@@ -158,6 +165,8 @@ dependencies {
     // RecyclerView和CardView
     compile 'com.chanven.lib:cptr:1.1.0'//下拉刷新
     compile 'com.orhanobut:logger:2.1.1'
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
 }
 
 

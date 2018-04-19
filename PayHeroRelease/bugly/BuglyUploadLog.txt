@@ -1,0 +1,16 @@
+file=D:\AS-Workplace-2.3.3\Self-Dir\PayHeroRelease\PayHeroRelease\build\outputs\mapping\sanbox\mapping.txt
+sha1=2edcafab4b26990a4ea3d084a19487ce150fb8fb
+appId=1a522f83c6
+
+file=D:\AS-Workplace-2.3.3\Self-Dir\PayHeroRelease\PayHeroRelease\build\outputs\mapping\sanbox\mapping.txt
+sha1=3b013f199e678fdd0c5e27c05ef6538c74328577
+appId=1a522f83c6
+
+file=D:\AS-Workplace-2.3.3\Self-Dir\PayHeroRelease\PayHeroRelease\build\outputs\mapping\sanbox\mapping.txt
+sha1=3b013f199e678fdd0c5e27c05ef6538c74328577
+appId=1a522f83c6
+
+file=D:\AS-Workplace-2.3.3\Self-Dir\PayHeroRelease\PayHeroRelease\build\outputs\mapping\sanbox\mapping.txt
+sha1=2edcafab4b26990a4ea3d084a19487ce150fb8fb
+appId=1a522f83c6
+

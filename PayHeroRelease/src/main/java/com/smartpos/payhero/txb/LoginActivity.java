@@ -5,8 +5,6 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.newland.smartpos.porting.impl.StringUtils;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.bean.Temp;
 import com.smartpos.payhero.txb.bean.User;
@@ -39,7 +37,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedIntanceState) {
         super.onCreate(savedIntanceState);
         setContentView(R.layout.activity_login);
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @OnClick(R.id.login_btn)

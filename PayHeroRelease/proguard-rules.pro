@@ -101,47 +101,45 @@
 
 
 #=======txb=========
-
-#retrofit2  混淆
--dontwarn javax.annotation.**
--dontwarn javax.inject.**
-# OkHttp3
--dontwarn okhttp3.logging.**
--keep class okhttp3.internal.**{*;}
--dontwarn okio.**
-# Retrofit
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
+# Gson used start
 -keepattributes Signature
--keepattributes Exceptions
-# RxJava RxAndroid
--dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
-# Gson
--keep class com.google.gson.stream.** { *; }
--keepattributes EnclosingMethod
-#-keep class com.mvp.entitry.**{*;}//改成自己的实体类包
+-keep class sun.misc.Unsafe { *; }
 -keep class com.smartpos.payhero.txb.bean.**{*;}
+# Gson used end
+# retrofit2 start
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on RoboVM on iOS. Will not be used at runtime.
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
+-keepattributes Exceptions
+# retrofit2 end
 
-## Retrofit
-#-dontnote retrofit2.Platform
-#-dontnote retrofit2.Platform$IOS$MainThreadExecutor
-#-dontwarn retrofit2.Platform$Java8
-#-keepattributes Signature
-#-keepattributes Exceptions
-#
-## okhttp
-#-dontwarn okio.**
-#
-## Gson
-#-keep class com.example.testing.retrofitdemo.bean.**{*;} # 自定义数据模型的bean目录
+# ButterKnife start
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+# ButterKnife end
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
