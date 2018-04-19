@@ -21,6 +21,7 @@ import com.smartpos.payhero.txb.bean.PayRecord;
 import com.smartpos.payhero.txb.bean.PayRecordList;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.PullDownObserver;
+import com.smartpos.payhero.txb.tools.DateTools;
 import com.smartpos.payhero.txb.ui.PtrClassicFrameLayoutEx;
 import com.smartpos.payhero.txb.ui.PtrDefaultHandlerEx;
 import com.smartpos.payhero.txb.ui.PtrFrameLayoutEx;
@@ -52,7 +53,6 @@ public class StatisticsFragment extends BaseFragment {
     private List<PayRecord> mDatas = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat formatTime = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
 
     @BindView(R.id.start_date)
     TextView stateDate;
@@ -93,7 +93,7 @@ public class StatisticsFragment extends BaseFragment {
                         startActivity(OrderInfoActivity.class, payRecord.getOrder_id());
                     }
                 });
-                holder.setText(R.id.item_time, formatTime.format(new Date(Long.parseLong(payRecord.getTime()))));
+                holder.setText(R.id.item_time, DateTools.formatHms_Str(payRecord.getTime()));
                 holder.setText(R.id.item_amount, "¥" + payRecord.getTprice());
             }
         };

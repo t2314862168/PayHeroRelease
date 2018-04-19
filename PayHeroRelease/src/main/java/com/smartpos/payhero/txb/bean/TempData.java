@@ -17,7 +17,7 @@ public class TempData implements Serializable {
     String price;
     String ptype;
     String tprice;
-    String time;
+    long time;
 
 
     public String getZkprice() {
@@ -60,11 +60,11 @@ public class TempData implements Serializable {
         this.tprice = tprice;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

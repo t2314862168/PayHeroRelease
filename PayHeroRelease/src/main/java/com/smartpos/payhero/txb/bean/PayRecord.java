@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class PayRecord implements Serializable {
 
     private String order_id;
-    private String time;
+    private long time;
     private String price;
     private String tprice;
     private String discount;
@@ -25,11 +25,11 @@ public class PayRecord implements Serializable {
         this.order_id = order_id;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

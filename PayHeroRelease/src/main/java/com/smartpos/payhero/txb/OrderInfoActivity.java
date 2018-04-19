@@ -10,6 +10,7 @@ import com.smartpos.payhero.txb.bean.TempDataList;
 import com.smartpos.payhero.txb.net.ApiService;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
+import com.smartpos.payhero.txb.tools.DateTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,8 +82,7 @@ public class OrderInfoActivity extends BaseActivity {
     }
 
     private void inflateData(TempData tempData) {
-
-        item_0.setText("支付时间：" + tempData.getTime());
+        item_0.setText("支付时间：" + DateTools.formatHms_Str(tempData.getTime()));
         item_1.setText("折扣金额：" + tempData.getZkprice());
         item_2.setText("非折扣金额：" + tempData.getFzkprice());
         item_3.setText("总金额：" + tempData.getPrice());
