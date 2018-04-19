@@ -3,7 +3,6 @@ package com.smartpos.payhero.txb;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.bean.TempData;
 import com.smartpos.payhero.txb.bean.TempDataList;
@@ -11,6 +10,7 @@ import com.smartpos.payhero.txb.net.ApiService;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
 import com.smartpos.payhero.txb.tools.DateTools;
+import com.smartpos.payhero.txb.tools.GsonTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,8 +67,7 @@ public class OrderInfoActivity extends BaseActivity {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
                         try {
-                            Gson gson = new Gson();
-                            TempDataList temp = gson.fromJson(response.body().string(), TempDataList.class);
+                            TempDataList temp = GsonTools.fromJson(response.body().string(), TempDataList.class);
                             if (temp.getError_code() == 0) {
                                 showToast(temp.getMsg());
                             }

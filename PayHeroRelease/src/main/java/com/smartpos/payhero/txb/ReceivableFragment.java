@@ -22,6 +22,7 @@ import com.smartpos.payhero.txb.bean.TempData;
 import com.smartpos.payhero.txb.net.ApiService;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
+import com.smartpos.payhero.txb.tools.GsonTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +60,7 @@ public class ReceivableFragment extends BaseFragment {
 
     @Override
     public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment1,container,false);
+        return inflater.inflate(R.layout.fragment1, container, false);
     }
 
     @Override
@@ -69,9 +70,11 @@ public class ReceivableFragment extends BaseFragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 setAmountEdit();
@@ -82,19 +85,19 @@ public class ReceivableFragment extends BaseFragment {
     }
 
     @OnClick(R.id.phone_commit_btn)
-    public void commitPhone(){
+    public void commitPhone() {
         String phone = phoneEdit.getText().toString();
 
-        if(phone==null || phone.length()<11){
+        if (phone == null || phone.length() < 11) {
             showToast("号码有误");
             return;
         }
 
         JSONObject data = new JSONObject();
         try {
-            data.put("cmd",2);
-            data.put("uid",getConstantUser().getUid());
-            data.put("phone",phone);
+            data.put("cmd", 2);
+            data.put("uid", getConstantUser().getUid());
+            data.put("phone", phone);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,13 +111,12 @@ public class ReceivableFragment extends BaseFragment {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
                         try {
-                            Gson gson = new Gson();
-                            Temp temp = gson.fromJson(response.body().string(), Temp.class);
-                            TempData tempData = gson.fromJson(temp.getData().toString(), TempData.class);
+                            Temp temp = GsonTools.fromJson(response.body().string(), Temp.class);
+                            TempData tempData = GsonTools.fromJson(temp.getData().toString(), TempData.class);
                             int status = tempData.getStatus();
-                            if(status==1){
+                            if (status == 1) {
                                 setData(tempData);
-                            }else{
+                            } else {
                                 showDialog(temp.getMsg());
                             }
                         } catch (Exception e) {
@@ -126,12 +128,13 @@ public class ReceivableFragment extends BaseFragment {
 
         //收起键盘
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()) imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        if (imm.isActive()) imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 
     }
 
 
-    AlertDialog alertDialog ;
+    AlertDialog alertDialog;
+
     private void showDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("会员注册");
@@ -144,14 +147,14 @@ public class ReceivableFragment extends BaseFragment {
                 String phone = phoneEdit.getText().toString();
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("cmd",7);
-                    data.put("uid",getConstantUser().getUid());
-                    data.put("phone",phone);
+                    data.put("cmd", 7);
+                    data.put("uid", getConstantUser().getUid());
+                    data.put("phone", phone);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                NetTools.post(data.toString(),new ProcessObserver<Response<ResponseBody>>(getActivity()) {
+                NetTools.post(data.toString(), new ProcessObserver<Response<ResponseBody>>(getActivity()) {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
                         try {
@@ -180,12 +183,12 @@ public class ReceivableFragment extends BaseFragment {
     }
 
 
-    public void setData(TempData data){
+    public void setData(TempData data) {
         payUser = data;
         setAmountEdit();
     }
 
-    public void setAmountEdit(){
+    public void setAmountEdit() {
         String amount = amountEdit.getText().toString();
         String amountDis = amountDisEdit.getText().toString();
 
@@ -194,30 +197,30 @@ public class ReceivableFragment extends BaseFragment {
         order.setFzkprice(amount);
         order.setZkprice(amountDis);
 
-        if(payUser!=null&&payUser.getStatus()==1){
-            order.setDiscount(payUser.getDiscount()+"");
-            messageText.setText("会员实付："+order.getFzkprice()+"+"+order.getZkpriceAfter()+"("+order.getDiscountX10()+"折) = "+order.getTprice());
-        }else{
-            messageText.setText("非会员实付：¥ "+order.getTprice());
+        if (payUser != null && payUser.getStatus() == 1) {
+            order.setDiscount(payUser.getDiscount() + "");
+            messageText.setText("会员实付：" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
+        } else {
+            messageText.setText("非会员实付：¥ " + order.getTprice());
         }
-        amountTop.setText("消费金额:  ¥ "+order.getTprice());
+        amountTop.setText("消费金额:  ¥ " + order.getTprice());
         Constant.setOrder(order);
     }
 
     @OnClick(R.id.left_btn)
-    public void leftBtn(){
-        if(Constant.getOrder()!=null&&Constant.getOrder().getTprice()!=null){
+    public void leftBtn() {
+        if (Constant.getOrder() != null && Constant.getOrder().getTprice() != null) {
             startActivity(com.smartpos.payhero.txb.PayMethdActivity.class);
-        }else{
+        } else {
             showToast("请输入金额");
         }
     }
 
     @OnClick(R.id.right_btn)
-    public void rightBtn(){
-        if(Constant.getOrder()!=null&&Constant.getOrder().getTprice()!=null) {
+    public void rightBtn() {
+        if (Constant.getOrder() != null && Constant.getOrder().getTprice() != null) {
             startActivity(com.smartpos.payhero.txb.PayCodeActivity.class);
-        }else{
+        } else {
             showToast("请输入金额");
         }
     }

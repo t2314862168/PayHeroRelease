@@ -3,7 +3,6 @@ package com.smartpos.payhero.txb;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.newland.smartpos.porting.impl.StringUtils;
 import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.bean.Temp;
@@ -11,6 +10,8 @@ import com.smartpos.payhero.txb.bean.User;
 import com.smartpos.payhero.txb.net.ApiService;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
+import com.smartpos.payhero.txb.tools.GsonTools;
+import com.smartpos.payhero.txb.tools.ToastTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,18 +74,23 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new ProcessObserver<Response<ResponseBody>>(context) {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
+                        Temp temp = null;
                         try {
-                            Gson gson = new Gson();
-                            Temp temp = gson.fromJson(response.body().string(), Temp.class);
-                            User user = gson.fromJson(temp.getData().toString(), User.class);
+                            temp = GsonTools.fromJson(response.body().string(), Temp.class);
+                            User user = GsonTools.fromJson(temp.getData().toString(), User.class);
+                            if (temp != null) {
+                                ToastTools.showStrByShort(context, temp.getMsg());
+                            }
+                            if (user == null) return;
                             setConstantUser(user);
                             startActivityFinish(MainActivity.class);
                         } catch (Exception e) {
+                            if (temp != null) {
+                                ToastTools.showStrByShort(context, temp.getMsg());
+                            }
                             e.printStackTrace();
                         }
                     }
                 });
     }
-
-
 }

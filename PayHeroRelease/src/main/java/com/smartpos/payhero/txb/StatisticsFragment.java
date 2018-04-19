@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
-import com.google.gson.Gson;
 import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.bean.Pager;
 import com.smartpos.payhero.txb.bean.PayRecord;
@@ -22,6 +21,7 @@ import com.smartpos.payhero.txb.bean.PayRecordList;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.PullDownObserver;
 import com.smartpos.payhero.txb.tools.DateTools;
+import com.smartpos.payhero.txb.tools.GsonTools;
 import com.smartpos.payhero.txb.ui.PtrClassicFrameLayoutEx;
 import com.smartpos.payhero.txb.ui.PtrDefaultHandlerEx;
 import com.smartpos.payhero.txb.ui.PtrFrameLayoutEx;
@@ -168,8 +168,7 @@ public class StatisticsFragment extends BaseFragment {
             @Override
             public void dropdown(@NonNull Response<ResponseBody> response) {
                 try {
-                    Gson gson = new Gson();
-                    PayRecordList temp = gson.fromJson(response.body().string(), PayRecordList.class);
+                    PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
                     List dataList = (List<PayRecord>) temp.getData();
                     mDatas.addAll(dataList);
                     mAdapter.notifyDataSetChangedHF();
@@ -191,8 +190,7 @@ public class StatisticsFragment extends BaseFragment {
             @Override
             public void loadMore(@NonNull Response<ResponseBody> response) {
                 try {
-                    Gson gson = new Gson();
-                    PayRecordList temp = gson.fromJson(response.body().string(), PayRecordList.class);
+                    PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
                     List dataList = (List<PayRecord>) temp.getData();
                     // 判断是否还有下一页数据
                     Pager pager = temp.getPager();
