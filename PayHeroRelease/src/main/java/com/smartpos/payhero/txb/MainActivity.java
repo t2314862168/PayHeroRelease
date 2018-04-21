@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -22,7 +21,7 @@ import static com.smartpos.payhero.MainActivity.MY_PERMISSIONS_REQUEST;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
-    private Fragment receivableF,statisticsF;
+    private BaseFragment receivableF,statisticsF;
     @BindView(R.id.rd_group)
     public RadioGroup mMenu;
 
@@ -33,6 +32,15 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         setContentView(R.layout.txb_activity_main);
         initView();
         initPayment();
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(receivableF!=null){
+            receivableF.onRestart();
+        }
     }
 
     public void initView() {

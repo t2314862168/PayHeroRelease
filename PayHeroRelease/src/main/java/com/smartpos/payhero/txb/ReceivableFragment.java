@@ -53,10 +53,27 @@ public class ReceivableFragment extends BaseFragment {
     TextView amountTop;
 
     private TempData payUser;
-
+    private String mPhone;
     private String vip = "";
     private String noVip = "";
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        if(Constant.getOrder()==null||Constant.getOrder().getTprice().floatValue()==0){
+            resetOrder();
+        }
+    }
+
+    @OnClick(R.id.reset_order)
+    public void resetOrder(){
+        Constant.setOrder(null);
+        amountEdit.setText("");
+        amountDisEdit.setText("");
+        phoneEdit.setText("");
+        messageText.setText("");
+        amountTop.setText("消费金额：");
+    }
 
     @Override
     public View createView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,9 +101,10 @@ public class ReceivableFragment extends BaseFragment {
         amountEdit.addTextChangedListener(tw);
     }
 
+
     @OnClick(R.id.phone_commit_btn)
     public void commitPhone() {
-        String phone = phoneEdit.getText().toString();
+        final String phone = phoneEdit.getText().toString();
 
         if (phone == null || phone.length() < 11) {
             showToast("号码有误");
@@ -111,6 +129,7 @@ public class ReceivableFragment extends BaseFragment {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
                         try {
+                            mPhone = phone;
                             Temp temp = GsonTools.fromJson(response.body().string(), Temp.class);
                             TempData tempData = GsonTools.fromJson(temp.getData().toString(), TempData.class);
                             int status = tempData.getStatus();
@@ -144,7 +163,7 @@ public class ReceivableFragment extends BaseFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                String phone = phoneEdit.getText().toString();
+                final String phone = phoneEdit.getText().toString();
                 JSONObject data = new JSONObject();
                 try {
                     data.put("cmd", 7);
@@ -158,6 +177,7 @@ public class ReceivableFragment extends BaseFragment {
                     @Override
                     public void onNext(@NonNull Response<ResponseBody> response) {
                         try {
+                            mPhone = phone;
                             Gson gson = new Gson();
                             Temp temp = gson.fromJson(response.body().string(), Temp.class);
                             showToast(temp.getMsg());
@@ -199,17 +219,18 @@ public class ReceivableFragment extends BaseFragment {
 
         if (payUser != null && payUser.getStatus() == 1) {
             order.setDiscount(payUser.getDiscount() + "");
+            order.setPhone(mPhone);
             messageText.setText("会员实付：" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
         } else {
-            messageText.setText("非会员实付：¥ " + order.getTprice());
+            messageText.setText("非会员实付：¥ " + (order.getTprice()==null?"":order.getTprice()));
         }
-        amountTop.setText("消费金额:  ¥ " + order.getTprice());
+        amountTop.setText("消费金额: " + (order.getTprice()==null?"":" ¥ "+order.getTprice()));
         Constant.setOrder(order);
     }
 
     @OnClick(R.id.left_btn)
     public void leftBtn() {
-        if (Constant.getOrder() != null && Constant.getOrder().getTprice() != null) {
+        if (priceIsNull()) {
             startActivity(com.smartpos.payhero.txb.PayMethdActivity.class);
         } else {
             showToast("请输入金额");
@@ -218,11 +239,15 @@ public class ReceivableFragment extends BaseFragment {
 
     @OnClick(R.id.right_btn)
     public void rightBtn() {
-        if (Constant.getOrder() != null && Constant.getOrder().getTprice() != null) {
+        if (priceIsNull()) {
             startActivity(com.smartpos.payhero.txb.PayCodeActivity.class);
         } else {
             showToast("请输入金额");
         }
     }
 
+
+    public boolean priceIsNull(){
+        return Constant.getOrder() != null && Constant.getOrder().getTprice() != null && Constant.getOrder().getTprice().floatValue()>0;
+    }
 }

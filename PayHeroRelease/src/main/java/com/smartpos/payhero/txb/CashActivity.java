@@ -82,6 +82,7 @@ public class CashActivity extends BaseActivity {
             array.put(PrintManager.packerTxtPrintJson("1", "---", "center"));
             array.put(PrintManager.packerTxtPrintJson("3", "交\r易：" + Constant.getOrder().getOrder_id()));
             array.put(PrintManager.packerTxtPrintJson("2", "交易方式：现金" ));
+            array.put(PrintManager.packerTxtPrintJson("2", "会员号：" + Constant.getOrder().getPhone()));
             array.put(PrintManager.packerTxtPrintJson("2", "应收：" + Constant.getOrder().getTprice()+"元"));
             array.put(PrintManager.packerTxtPrintJson("2", "实收：" + amount+"元"));
             array.put(PrintManager.packerTxtPrintJson("2", "找零：" + subtract+"元"));

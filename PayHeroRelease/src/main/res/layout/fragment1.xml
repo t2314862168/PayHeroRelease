@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/bg_white"
         android:layout_width="320dp"
         android:layout_height="300dp"
         android:layout_marginTop="75dp"
@@ -27,7 +28,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 
     <LinearLayout
@@ -42,7 +42,6 @@
         android:gravity="bottom"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -50,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=":"/>
+            android:text="全款:"/>
 
         <EditText
             android:id="@+id/amount_edit"
@@ -88,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=":"/>
+            android:text="打折:"/>
 
         <EditText
             android:id="@+id/amount_dis_edit"
@@ -116,6 +115,19 @@
         android:text="消费金额"
         android:textSize="@dimen/small"
         android:textColor="@color/color_black" />
+
+    <TextView
+        android:id="@+id/reset_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="@id/bg_white"
+        app:layout_constraintTop_toTopOf="@id/bg_white"
+        android:padding="3dp"
+        android:text="重置"
+        android:textSize="@dimen/small"
+        android:background="@color/main_color"
+        android:textColor="@color/white" />
+
 
     <LinearLayout
         android:id="@+id/phone_layout"

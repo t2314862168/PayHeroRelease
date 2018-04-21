@@ -11,6 +11,7 @@ import com.bill99.smartpos.sdk.api.model.BLScanBSCConsumeMsg;
 import com.bill99.smartpos.sdk.api.model.BLScanCSBConsumeMsg;
 import com.google.gson.Gson;
 import com.smartpos.payhero.txb.BaseActivity;
+import com.smartpos.payhero.txb.Constant;
 import com.smartpos.payhero.txb.bean.Order;
 import com.smartpos.payhero.txb.bean.Temp;
 import com.smartpos.payhero.txb.bean.TempData;
@@ -119,10 +120,7 @@ public class PayTools {
 
     public void startPay(Order order) {
         BLPaymentRequest params = new BLPaymentRequest<>();
-        if (order.getPtype() == Order.CASH) {
-
-
-        } else if (order.getPtype() == Order.CART) {
+        if (order.getPtype() == Order.CART) {
             BLCPConsumeMsg sdkMsg = new BLCPConsumeMsg();
             sdkMsg.transId = order.getOrder_id();
             sdkMsg.orderId = order.getOrder_id();
@@ -190,7 +188,7 @@ public class PayTools {
     }
 
     /**
-     * 发送数据到服务器。
+     * 一切完成后，数据
      */
     public void sendMessage() {
 //        cmd	是	int	固定值 6
@@ -218,6 +216,9 @@ public class PayTools {
                             Temp temp = gson.fromJson(response.body().string(), Temp.class);
                             if(temp.getError_code() == 0){
                                 context.showToast(temp.getMsg());
+                            }else{
+                                Constant.setOrder(null);
+                                context.finish();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -11,6 +11,13 @@ public class PayCodeActivity extends BaseActivity {
 
     PayTools payTools;
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(Constant.getOrder()==null||Constant.getOrder().getTprice().floatValue()==0){
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedIntanceState) {

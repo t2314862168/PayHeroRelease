@@ -26,7 +26,13 @@ public class PayMethdActivity extends BaseActivity {
         };
     }
 
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(Constant.getOrder()==null||Constant.getOrder().getTprice().floatValue()==0){
+            finish();
+        }
+    }
 
     public void zhifubao(View v){
         Constant.getOrder().setPtype(Order.ZHIFUBAO);

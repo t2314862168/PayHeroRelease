@@ -22,6 +22,10 @@ public abstract class BaseFragment extends Fragment {
     private Constant constant;
     private Unbinder unbinder;
 
+    public void onRestart(){
+
+    }
+
     public void showToast(String message){
         Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }
