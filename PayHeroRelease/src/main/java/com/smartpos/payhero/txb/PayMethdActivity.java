@@ -29,22 +29,22 @@ public class PayMethdActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(Constant.getOrder()==null||Constant.getOrder().getTprice().floatValue()==0){
+        if (Constant.getOrder() == null) {
             finish();
         }
     }
 
-    public void zhifubao(View v){
+    public void zhifubao(View v) {
         Constant.getOrder().setPtype(Order.ZHIFUBAO);
-        payTools.generateOrder(Constant.getOrder(),callback);
+        payTools.generateOrder(Constant.getOrder(), callback);
     }
 
-    public void weixin(View v){
+    public void weixin(View v) {
         Constant.getOrder().setPtype(Order.WEIXIN);
-        payTools.generateOrder(Constant.getOrder(),callback);
+        payTools.generateOrder(Constant.getOrder(), callback);
     }
 
-    public void cash(View v){
+    public void cash(View v) {
         Constant.getOrder().setPtype(Order.CASH);
         payTools.generateOrder(Constant.getOrder(), new PayTools.OrderCallback() {
             @Override
@@ -54,8 +54,8 @@ public class PayMethdActivity extends BaseActivity {
         });
     }
 
-    public void cart(View v){
+    public void cart(View v) {
         Constant.getOrder().setPtype(Order.CART);
-        payTools.generateOrder(Constant.getOrder(),callback);
+        payTools.generateOrder(Constant.getOrder(), callback);
     }
 }

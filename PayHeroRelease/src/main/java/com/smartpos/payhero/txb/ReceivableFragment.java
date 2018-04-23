@@ -61,7 +61,7 @@ public class ReceivableFragment extends BaseFragment {
     @Override
     public void onRestart() {
         super.onRestart();
-        if (Constant.getOrder() == null || Constant.getOrder().getTprice().floatValue() == 0) {
+        if (Constant.getOrder() == null) {
             resetOrder();
         }
     }
