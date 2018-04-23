@@ -52,9 +52,12 @@ public class Order implements Serializable {
     }
 
     public void setDiscount(String discountStr) {
-        this.discount = new BigDecimal(discountStr);
-        discountX10 = discount.multiply(new BigDecimal(10)).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
-        calculationDis();
+        try {
+            this.discount = new BigDecimal(discountStr);
+            discountX10 = discount.multiply(new BigDecimal(10)).setScale(1, BigDecimal.ROUND_HALF_UP).toString();
+            calculationDis();
+        } catch (Exception e) {
+        }
     }
 
     public String getOrder_id() {
@@ -66,16 +69,21 @@ public class Order implements Serializable {
     }
 
     public void setZkprice(String zkprice) {
-        if (zkprice.trim().length() == 0) return;
-
-        this.zkprice = new BigDecimal(zkprice);
-        calculationDis();
+        try {
+            if (zkprice.trim().length() == 0) return;
+            this.zkprice = new BigDecimal(zkprice);
+            calculationDis();
+        } catch (Exception e) {
+        }
     }
 
     public void setFzkprice(String fzkprice) {
-        if (fzkprice.trim().length() == 0) return;
-        this.fzkprice = new BigDecimal(fzkprice);
-        calculationDis();
+        try {
+            if (fzkprice.trim().length() == 0) return;
+            this.fzkprice = new BigDecimal(fzkprice);
+            calculationDis();
+        } catch (Exception e) {
+        }
     }
 
     private void calculationDis() {
@@ -141,7 +149,11 @@ public class Order implements Serializable {
     }
 
     public String getTpriceX100() {
-        return tprice.multiply(new BigDecimal(100)).intValue()+"";
+        try {
+            return tprice.multiply(new BigDecimal(100)).intValue() + "";
+        } catch (Exception e) {
+        }
+        return "";
     }
 
 

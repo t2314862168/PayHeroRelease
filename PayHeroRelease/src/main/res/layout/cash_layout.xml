@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@null"
+            android:inputType="number"
             android:textSize="@dimen/big_plus" />
 
     </LinearLayout>
@@ -64,16 +65,16 @@
         android:background="@drawable/btn_hollow"
         android:onClick="zhaolinClick"
         android:text="找  零"
-        android:textSize="@dimen/big"
-        android:textColor="@color/main_color"/>
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/big" />
 
     <Button
         android:id="@+id/login_btn"
         android:layout_width="260dp"
         android:layout_height="50dp"
         android:layout_marginTop="70dp"
-        android:onClick="commit"
         android:background="@drawable/btn_style"
+        android:onClick="commit"
         android:text="确认入账"
         android:textColor="@color/white"
         android:textSize="@dimen/middle" />

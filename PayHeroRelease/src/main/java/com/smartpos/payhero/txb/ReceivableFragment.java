@@ -20,6 +20,7 @@ import com.smartpos.payhero.txb.bean.Order;
 import com.smartpos.payhero.txb.bean.Temp;
 import com.smartpos.payhero.txb.bean.TempData;
 import com.smartpos.payhero.txb.net.ApiService;
+import com.smartpos.payhero.txb.net.MLogUtils;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
 import com.smartpos.payhero.txb.tools.GsonTools;
@@ -60,19 +61,43 @@ public class ReceivableFragment extends BaseFragment {
     @Override
     public void onRestart() {
         super.onRestart();
-        if(Constant.getOrder()==null||Constant.getOrder().getTprice().floatValue()==0){
+        if (Constant.getOrder() == null || Constant.getOrder().getTprice().floatValue() == 0) {
             resetOrder();
         }
     }
 
+    TextWatcher tw = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            setAmountEdit();
+        }
+    };
+
     @OnClick(R.id.reset_order)
-    public void resetOrder(){
+    public void resetOrder() {
+        // 先移除掉监听
+        amountDisEdit.removeTextChangedListener(tw);
+        amountEdit.removeTextChangedListener(tw);
+
         Constant.setOrder(null);
+        payUser = null;
+        mPhone = null;
         amountEdit.setText("");
         amountDisEdit.setText("");
         phoneEdit.setText("");
         messageText.setText("");
         amountTop.setText("消费金额：");
+
+        amountDisEdit.addTextChangedListener(tw);
+        amountEdit.addTextChangedListener(tw);
     }
 
     @Override
@@ -83,20 +108,6 @@ public class ReceivableFragment extends BaseFragment {
     @Override
     public void initView(View view) {
         messageText.setText("");
-        TextWatcher tw = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setAmountEdit();
-            }
-        };
         amountDisEdit.addTextChangedListener(tw);
         amountEdit.addTextChangedListener(tw);
     }
@@ -222,9 +233,9 @@ public class ReceivableFragment extends BaseFragment {
             order.setPhone(mPhone);
             messageText.setText("会员实付：" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
         } else {
-            messageText.setText("非会员实付：¥ " + (order.getTprice()==null?"":order.getTprice()));
+            messageText.setText("非会员实付：¥ " + (order.getTprice() == null ? "" : order.getTprice()));
         }
-        amountTop.setText("消费金额: " + (order.getTprice()==null?"":" ¥ "+order.getTprice()));
+        amountTop.setText("消费金额: " + (order.getTprice() == null ? "" : " ¥ " + order.getTprice()));
         Constant.setOrder(order);
     }
 
@@ -247,7 +258,7 @@ public class ReceivableFragment extends BaseFragment {
     }
 
 
-    public boolean priceIsNull(){
-        return Constant.getOrder() != null && Constant.getOrder().getTprice() != null && Constant.getOrder().getTprice().floatValue()>0;
+    public boolean priceIsNull() {
+        return Constant.getOrder() != null && Constant.getOrder().getTprice() != null && Constant.getOrder().getTprice().floatValue() > 0;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.smartpos.payhero.PrintManager;
 import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.tools.PayTools;
+import com.smartpos.payhero.txb.tools.ToastTools;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,26 +41,33 @@ public class CashActivity extends BaseActivity {
         initView();
     }
 
-    public void initView(){
+    public void initView() {
         yinshou.setText(Constant.getOrder().getTprice().toString());
     }
 
-    public void zhaolinClick(View v){
+    public void zhifubao(View v) {
+
+    }
+
+    public void zhaolinClick(View v) {
         String amount = shishou.getText().toString();
-        if(amount.trim().length()==0){
+        if (amount.trim().length() == 0) {
+            ToastTools.showStrByShort(context, "请输入实收金额");
             return;
         }
         BigDecimal a = new BigDecimal(amount);
         BigDecimal subtract = a.subtract(Constant.getOrder().getTprice());
-        zhaolin.setText("找零："+subtract.toString()+"元");
+        zhaolin.setText("找零：" + subtract.toString() + "元");
     }
 
 
-    public void commit(View v){
+    public void commit(View v) {
         String amount = shishou.getText().toString();
-        if(amount.trim().length()==0){
+        if (amount.trim().length() == 0) {
+            ToastTools.showStrByShort(context, "请输入实收金额");
             return;
         }
+
         BigDecimal a = new BigDecimal(amount);
         BigDecimal subtract = a.subtract(Constant.getOrder().getTprice());
 
@@ -67,8 +75,6 @@ public class CashActivity extends BaseActivity {
         final JSONObject content = new JSONObject();
         JSONArray array = new JSONArray();
         try {
-
-
 
 
             array.put(PrintManager.packerTxtPrintJson("3", "快钱支付清算信息有限公司", "center"));
@@ -81,11 +87,11 @@ public class CashActivity extends BaseActivity {
             array.put(PrintManager.packerTxtPrintJson("2", "操作员号：" + Constant.getUser().getUid()));
             array.put(PrintManager.packerTxtPrintJson("1", "---", "center"));
             array.put(PrintManager.packerTxtPrintJson("3", "交\r易：" + Constant.getOrder().getOrder_id()));
-            array.put(PrintManager.packerTxtPrintJson("2", "交易方式：现金" ));
+            array.put(PrintManager.packerTxtPrintJson("2", "交易方式：现金"));
             array.put(PrintManager.packerTxtPrintJson("2", "会员号：" + Constant.getOrder().getPhone()));
-            array.put(PrintManager.packerTxtPrintJson("2", "应收：" + Constant.getOrder().getTprice()+"元"));
-            array.put(PrintManager.packerTxtPrintJson("2", "实收：" + amount+"元"));
-            array.put(PrintManager.packerTxtPrintJson("2", "找零：" + subtract+"元"));
+            array.put(PrintManager.packerTxtPrintJson("2", "应收：" + Constant.getOrder().getTprice() + "元"));
+            array.put(PrintManager.packerTxtPrintJson("2", "实收：" + amount + "元"));
+            array.put(PrintManager.packerTxtPrintJson("2", "找零：" + subtract + "元"));
             array.put(PrintManager.packerTxtPrintJson("3", "\n"));
             array.put(PrintManager.packerTxtPrintJson("3", "\n"));
             array.put(PrintManager.packerTxtPrintJson("3", "\n"));
