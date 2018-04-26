@@ -241,16 +241,5 @@ public class StatisticsFragment extends BaseFragment {
         DatePicker datePicker = datePickerDialog.getDatePicker();
         datePicker.setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
-
-    }
-
-
-    /**
-     * onDestroyView中进行解绑操作
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

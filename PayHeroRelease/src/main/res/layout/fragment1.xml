@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="全款:"/>
+            android:text="不参与优惠金额:"/>
 
         <EditText
             android:id="@+id/amount_edit"
@@ -87,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="打折:"/>
+            android:text="参与优惠金额:"/>
 
         <EditText
             android:id="@+id/amount_dis_edit"
