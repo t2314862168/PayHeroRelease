@@ -33,7 +33,6 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -200,7 +199,10 @@ public class StatisticsFragment extends BaseFragment {
             @Override
             public void dropdown(@NonNull Response<ResponseBody> response) {
                 try {
-                    List dataList = priseData(response);
+                    PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
+                    List dataList = (List<PayRecord>) temp.getData();
+                    mTotalPrice.setText("消费："+temp.getPager().getTotalNum()+" 笔  总计金额：¥ "+temp.getTotalPrice());
+                    mDatas.clear();
                     mDatas.addAll(dataList);
                     mAdapter.notifyDataSetChangedHF();
                     ptrClassicFrameLayout.refreshComplete();
@@ -213,12 +215,6 @@ public class StatisticsFragment extends BaseFragment {
                 }
             }
 
-            private List priseData(Response<ResponseBody> response) throws IOException {
-                PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
-                List dataList = (List<PayRecord>) temp.getData();
-                mTotalPrice.setText("消费："+temp.getPager().getTotalNum()+" 笔  总计金额：¥ "+temp.getTotalPrice());
-                return dataList;
-            }
 
             @Override
             public void loadMore(@NonNull Response<ResponseBody> response) {
