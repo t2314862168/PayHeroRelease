@@ -1,15 +1,16 @@
 package com.smartpos.payhero.txb;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
@@ -18,6 +19,7 @@ import com.smartpos.payhero.R;
 import com.smartpos.payhero.txb.bean.Pager;
 import com.smartpos.payhero.txb.bean.PayRecord;
 import com.smartpos.payhero.txb.bean.PayRecordList;
+import com.smartpos.payhero.txb.bean.PayType;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.PullDownObserver;
 import com.smartpos.payhero.txb.tools.DateTools;
@@ -31,6 +33,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,17 +56,21 @@ public class StatisticsFragment extends BaseFragment {
     private List<PayRecord> mDatas = new ArrayList<>();
     private RecyclerAdapterWithHF mAdapter;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private int mPayType = 99;
 
     @BindView(R.id.start_date)
     TextView stateDate;
     @BindView(R.id.end_date)
     TextView endDate;
+    @BindView(R.id.select_type)
+    TextView mSelectType;
+
+    @BindView(R.id.total_price)
+    TextView mTotalPrice;
 
     private String startDateStr, endDateStr;
     private int pageSize = 10, pageIndex = 1;
 
-    @BindView(R.id.fl_blank)
-    FrameLayout blankFl;
     @BindView(R.id.test_recycler_view_frame)
     PtrClassicFrameLayoutEx ptrClassicFrameLayout;
     @BindView(R.id.recycler_view)
@@ -80,7 +87,6 @@ public class StatisticsFragment extends BaseFragment {
     public void initView(View view) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        blankFl.setVisibility(View.INVISIBLE);
         initDate();
         setListener();
 
@@ -114,7 +120,7 @@ public class StatisticsFragment extends BaseFragment {
         ptrClassicFrameLayout.post(new Runnable() {
             @Override
             public void run() {
-                ptrClassicFrameLayout.autoRefresh(true, 1000);
+                ptrClassicFrameLayout.autoRefresh(true);
             }
         });
 
@@ -122,8 +128,8 @@ public class StatisticsFragment extends BaseFragment {
             @Override
             public void onRefreshBegin(PtrFrameLayoutEx frame) {
                 pageIndex = 1;
-                mDatas.clear();
-                queryList(stateDate.getText().toString(), endDate.getText().toString(), pageIndex, pageSize, PullDownObserver.DROP_DOWN);
+                cleanData();
+                queryList(stateDate.getText().toString(), endDate.getText().toString(), pageIndex, pageSize, PullDownObserver.REFRESH, mPayType);
             }
         });
 
@@ -131,12 +137,35 @@ public class StatisticsFragment extends BaseFragment {
             @Override
             public void loadMore() {
                 pageIndex++;
-                queryList(stateDate.getText().toString(), endDate.getText().toString(), pageIndex, pageSize, PullDownObserver.LOAD_MORE);
+                queryList(stateDate.getText().toString(), endDate.getText().toString(), pageIndex, pageSize, PullDownObserver.LOAD_MORE, mPayType);
+            }
+        });
+
+        mSelectType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("付款类型");
+                // 设置列表显示，注意设置了列表显示就不要设置builder.setMessage()了，否则列表不起作用。
+                builder.setItems(PayType.getNames(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TextView t = (TextView) v;
+                        t.setText(PayType.selectName(which));
+                        mPayType = PayType.selectId(which);
+                        dialog.dismiss();
+                        cleanData();
+                        queryList(stateDate.getText().toString(), endDate.getText().toString(), pageIndex, pageSize, PullDownObserver.REFRESH, mPayType);
+                    }
+                });
+                builder.create().show();
             }
         });
     }
 
-    public void queryList(String startTime, String endTime, int pageIndex, int pageSize, final int dropDown) {
+
+    public void queryList(String startTime, String endTime, int pageIndex, int pageSize, final int dropDown, int pType) {
         try {
             Date start = format.parse(startTime);
             Date end = format.parse(endTime);
@@ -156,35 +185,39 @@ public class StatisticsFragment extends BaseFragment {
         try {
             data.put("cmd", 4);
             data.put("uid", getConstantUser().getUid());
+            data.put("ptype", pType);
             data.put("page", pageIndex);
             data.put("pageSize", pageSize);
             data.put("stime", startTime);
             data.put("etime", endTime);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         NetTools.post(data.toString(), new PullDownObserver<Response<ResponseBody>>(getActivity(), dropDown) {
+
             @Override
             public void dropdown(@NonNull Response<ResponseBody> response) {
                 try {
-                    PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
-                    List dataList = (List<PayRecord>) temp.getData();
+                    List dataList = priseData(response);
                     mDatas.addAll(dataList);
                     mAdapter.notifyDataSetChangedHF();
                     ptrClassicFrameLayout.refreshComplete();
                     ptrClassicFrameLayout.setLoadMoreEnable(true);
-                    // 如果没有数据
                     if (mDatas.size() == 0) {
-                        blankFl.setVisibility(View.VISIBLE);
-                    } else {
-                        if (blankFl.getVisibility() == View.VISIBLE) {
-                            blankFl.setVisibility(View.INVISIBLE);
-                        }
+                        showToast("没有获取到数据");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            private List priseData(Response<ResponseBody> response) throws IOException {
+                PayRecordList temp = GsonTools.fromJson(response.body().string(), PayRecordList.class);
+                List dataList = (List<PayRecord>) temp.getData();
+                mTotalPrice.setText("消费："+temp.getPager().getTotalNum()+" 笔  总计金额：¥ "+temp.getTotalPrice());
+                return dataList;
             }
 
             @Override
@@ -210,6 +243,8 @@ public class StatisticsFragment extends BaseFragment {
                     e.printStackTrace();
                 }
             }
+
+
         });
 
     }
@@ -232,14 +267,19 @@ public class StatisticsFragment extends BaseFragment {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 tempDateView.setText(year + "-" + (++month) + "-" + dayOfMonth);
                 // 先清除数据
-                mDatas.clear();
-                mAdapter.notifyDataSetChangedHF();
-                // 下拉刷新
-                ptrClassicFrameLayout.autoRefresh(true);
+                cleanData();
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         DatePicker datePicker = datePickerDialog.getDatePicker();
         datePicker.setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
+    }
+
+    public void cleanData(){
+        mDatas.clear();
+        mAdapter.notifyDataSetChangedHF();
+        mTotalPrice.setText("消费：0笔   总计金额：¥ 0 ");
+        // 下拉刷新
+        ptrClassicFrameLayout.autoRefresh(true);
     }
 }

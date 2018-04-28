@@ -13,6 +13,15 @@ public class PayRecordList<T> implements Serializable {
     private String msg;
     private List<PayRecord> data;
     private Pager pager;
+    private String totalPrice;
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public Pager getPager() {
         return pager;

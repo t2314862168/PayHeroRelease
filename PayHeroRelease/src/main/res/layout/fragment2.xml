@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/main_black"
         android:gravity="center"
         android:text="统    计"
         android:textColor="@color/white"
-        android:textSize="@dimen/big"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="@dimen/big" />
 
     <LinearLayout
         android:id="@+id/date_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:background="@drawable/bottom_line_black"
-        android:padding="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/start_date"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:background="@drawable/btn_hollow"
             android:gravity="center"
@@ -45,6 +38,8 @@
             android:id="@+id/end_date"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="@drawable/btn_hollow"
             android:gravity="center"
@@ -52,16 +47,25 @@
             android:padding="10dp"
             android:text="结算日期"
             android:textSize="@dimen/small" />
+
+        <TextView
+            android:id="@+id/select_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_hollow"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="付款类型"
+            android:textSize="@dimen/small" />
     </LinearLayout>
 
 
     <FrameLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_layout">
+        android:layout_weight="1">
 
         <com.smartpos.payhero.txb.ui.PtrClassicFrameLayoutEx xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/test_recycler_view_frame"
@@ -82,21 +86,19 @@
                 android:background="@android:color/white" />
         </com.smartpos.payhero.txb.ui.PtrClassicFrameLayoutEx>
 
-        <FrameLayout
-            android:id="@+id/fl_blank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#f0f0f0">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="暂时还没有订单数据..."
-                android:textSize="18sp" />
-        </FrameLayout>
     </FrameLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_color" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="共计168条    合计金额：￥13123" />
+</LinearLayout>
 

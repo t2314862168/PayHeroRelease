@@ -1,5 +1,7 @@
 package com.smartpos.payhero.txb.bean;
 
+import com.smartpos.payhero.txb.Constant;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -28,7 +30,6 @@ public class Order implements Serializable {
     // WECHATCSB 微信C
     public static final String CODE_ZFB = "ALIPAYCSB";
     public static final String CODE_WX = "WECHATCSB";
-
 
     private String order_id;
     private String cmd;         //	固定值 3

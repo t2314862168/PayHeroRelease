@@ -20,7 +20,6 @@ import com.smartpos.payhero.txb.bean.Order;
 import com.smartpos.payhero.txb.bean.Temp;
 import com.smartpos.payhero.txb.bean.TempData;
 import com.smartpos.payhero.txb.net.ApiService;
-import com.smartpos.payhero.txb.net.MLogUtils;
 import com.smartpos.payhero.txb.net.NetTools;
 import com.smartpos.payhero.txb.net.ProcessObserver;
 import com.smartpos.payhero.txb.tools.GsonTools;
@@ -115,9 +114,8 @@ public class ReceivableFragment extends BaseFragment {
 
     @OnClick(R.id.phone_commit_btn)
     public void commitPhone() {
-        final String phone = phoneEdit.getText().toString();
-
-        if (phone == null || phone.length() < 11) {
+        final String phone = phoneEdit.getText().toString().trim();
+        if (phone == null || phone.length() != 11 ||!phone.startsWith("1")) {
             showToast("号码有误");
             return;
         }
@@ -228,14 +226,25 @@ public class ReceivableFragment extends BaseFragment {
         order.setFzkprice(amount);
         order.setZkprice(amountDis);
 
-        if (payUser != null && payUser.getStatus() == 1) {
-            order.setDiscount(payUser.getDiscount() + "");
-            order.setPhone(mPhone);
-            messageText.setText("会员实付：" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
+        //这里使用的是门店折扣
+        String discount = Constant.getUser().getDiscount();
+        if (discount != null && discount.length() > 0) {
+            order.setDiscount(discount);
+            if (payUser != null && payUser.getStatus() == 1) order.setPhone(mPhone);
+            messageText.setText("实付：¥" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
         } else {
-            messageText.setText("非会员实付：¥ " + (order.getTprice() == null ? "" : order.getTprice()));
+            messageText.setText("实付：¥ " + (order.getTprice() == null ? "" : order.getTprice()));
         }
-        amountTop.setText("消费金额: " + (order.getTprice() == null ? "" : " ¥ " + order.getTprice()));
+
+        // 这里使用的是 会员的折扣 使用时，屏蔽上面的 门店折扣，打开下面的代码即可。
+//        if (payUser != null && payUser.getStatus() == 1) {
+//            order.setDiscount(payUser.getDiscount() + "");
+//            order.setPhone(mPhone);
+//            messageText.setText("会员实付：¥" + order.getFzkprice() + "+" + order.getZkpriceAfter() + "(" + order.getDiscountX10() + "折) = " + order.getTprice());
+//        } else {
+//            messageText.setText("非会员实付：¥ " + (order.getTprice() == null ? "" : order.getTprice()));
+//        }
+//        amountTop.setText("消费金额: " + (order.getTprice() == null ? "" : " ¥ " + order.getTprice()));
         Constant.setOrder(order);
     }
 

@@ -14,7 +14,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class PullDownObserver<T>  implements Observer<T> {
 
     private Context context;
-    public final static int DROP_DOWN = 1,LOAD_MORE = 2;
+    public final static int REFRESH = 1,LOAD_MORE = 2;
     int mode;
     public PullDownObserver(Context context, int mode) {
         this.context = context;
@@ -28,7 +28,7 @@ public abstract class PullDownObserver<T>  implements Observer<T> {
     @Override
     public void onNext(@NonNull T t){
         switch (mode){
-            case DROP_DOWN:
+            case REFRESH:
                 dropdown(t);
                 break;
             case LOAD_MORE:
